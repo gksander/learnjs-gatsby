@@ -51,8 +51,11 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
     setStageItems((items) => items.concat(new RectClass(...params)));
 
   // Circle helper
-  const $circle = (...params: ConstructorParameters<typeof CircleClass>) =>
-    setStageItems((items) => items.concat(new CircleClass(...params)));
+  const $circle = (...params: ConstructorParameters<typeof CircleClass>) => {
+    const circle = new CircleClass(...params);
+    setStageItems((items) => items.concat(circle));
+    return circle;
+  };
 
   // Star helper
   const $star = (...params: ConstructorParameters<typeof StarClass>) =>
@@ -210,6 +213,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
                                 y={item.y}
                                 fill="red"
                                 {...item.options}
+                                ref={(node) => (item.node = node)}
                               />
                             );
                           }

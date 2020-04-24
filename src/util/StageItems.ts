@@ -48,6 +48,7 @@ export class CircleClass {
   x!: number;
   y!: number;
   options: any = {};
+  node: any = null;
 
   constructor(radius = 0, x = 0, y = 0, options = {}) {
     this.radius = radius;

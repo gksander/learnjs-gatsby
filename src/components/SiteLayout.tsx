@@ -1,5 +1,6 @@
 import * as React from "react";
 import { MDXProvider } from "@mdx-js/react";
+import "typeface-raleway";
 import "../assets/tailwind.css";
 import componentMap from "../util/componentMap";
 import Sidebar from "./Sidebar";
