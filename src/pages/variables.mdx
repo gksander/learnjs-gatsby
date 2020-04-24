@@ -1,0 +1,126 @@
+---
+title: Variables
+path: /variables
+section: Fundamentals
+order: 5
+---
+
+# Variables
+
+In the previous chapter we looked at _values_ and _expressions_. Recall that a _value_ is just some "thing" we work with when programming (such as a number or a word), and expressions are combinations of values that can be evaluated to a single value. In this chapter, we're going to look at a few problems we often run into when working with values and expressions, and a tool for solving those problems!
+
+## Problem #1: Reusing a value
+
+Suppose we wan to make a square. We don't know much about the square we're going to make, other than the fact that - since it's a square - it _must_ be a rectangle that has the same width and height. Let's go ahead and make one of those using our handy `$rect` command.
+
+> The `$rect` command takes at least 2 values: the first is the width of the rectangle, and the second is the height of the rectangle. So `$rect(100, 40)` would create a rectangle with a width of 100 px and a height of 40 px.
+
+Let's start our activity by creating a square that has a side length of `70` px (pixels).
+
+```js live=true
+// Create a square.
+$rect(70, 70);
+```
+
+Now, by changing the line of code in the live code snippet above, do the following 3 things:
+
+1. Make the square have a side length of 100 px.
+2. Now make the square have a side length of 185 px.
+3. Now make the square have a side length of 15 px.
+
+You might have noticed something! Each time you wanted to change the size of the square, you had to change _both the width and the height_. Wouldn't it be nice if we could streamline this a bit? Meet my friend, **variables**. 
+
+> In programming, a _variable_ is a "name" that "points" to a value. In JavaScript we can use the keywords `const` and `let` to create variables. For example, `const x = 3;` will create a variable named `x` whose value is `3`.
+
+This definition might seem a bit weird. Let's go back to our square example and see how we could use a variable to make our lives a bit easier.
+
+```js live=true
+// This is a variable named `sideLength`.
+// It has a value of 70.
+const sideLength = 70;
+
+// Create the square.
+$rect(sideLength, sideLength);
+```
+
+So... this code snippet has _more code_ than our last one :eyes:. So why would we do that? Let's go ahead and redo the tasks we looked at earlier: 
+
+1. Make the square have a side length of 100 px.
+2. Now make the square have a side length of 185 px.
+3. Now make the square have a side length of 15 px.
+
+You should have noticed that now, instead of changing the side length in two locations, you can just change the value of the variable `sideLength`!
+
+This is one very important use of variables. In this example, our variable was only used in two locations. But it's not uncommon in programming to use a variable in 10s or even 100s of different locations, and being able to change the value once saves a lot of time!
+
+## Problem #2: Breaking things down
+
+In the previous example, we used variables when we wanted to use the same value multiple times. However, sometimes we define variables and only used them once. This is especially useful when we have an _expression_ that's somewhat complicated and we want to use it's value later on without writing out the whole expression. Let's look at an example that will use two new features.
+
+> In this book, we have added in two helper variables for you to use: `$stageWidth` and `$stageHeight` which will give you the width and height of the stage. If you resize the stage, these values will update accordingly.
+
+In this example, we're going to create a rectangle that has the following properties:
+
+- The rectangle is half as wide as the stage.
+- The rectangle is half as tall as the stage.
+
+Let's dig in!
+
+```js live=true
+// Define variables for the width and height
+const width = $stageWidth / 2;
+const height = $stageHeight / 2;
+
+// Draw the rectangle
+$rect(width, height);
+```
+
+Go ahead and resize the stage and notice how the rectangle is always half as wide and half as tall as the stage. In this example, we defined variables `width` and `height` even though we only used them once. However, defining them makes the last line `$rect(width, height)` much easier to read! Otherwise, we'd have to write:
+
+```js
+$rect($stageWidth / 2, $stageHeight /2);
+```
+
+As our expressions get more and more complicated, this pattern will help us keep our code readable and understandable!
+
+## Variables with changing values
+
+In our examples so far, we have been using the keyword `const` to define our variables. This is a JavaScript thing. But did you happen to think to yourself, "what the heck does `const` even stand for?"? The keyword `const` actually stands for "constant"!
+
+Any variable defined with `const` cannot have its value changed later on (by code)! Lets check out an example where we might break this rule. Let's create two squares that sit on top of each other. We'll be using the `$rect` command with a few more arguments than we've seen so far - don't worry too much about the details there.
+
+```js live=true
+// Side length of our first square
+const sideLength = 150;
+
+// Create one square
+$rect(sideLength, sideLength, 0, 0);
+
+// Side length of our second square
+sideLength = 75;
+
+// Create second square
+$rect(sideLength, sideLength, 0, 0, { fill: "blue" });
+```
+
+This code _almost_ works - but we get an error! Since constants must have a constant value, we can't change the value of a constant later on! Things break here because `const sideLength = 150;` defines `sideLength` as a _constant_ variable but `sideLength = 75` tries to change its value!
+
+Let's fix this. In the live code snippet above, change the keyword `const` to `let`. What do you notice happened? You should see two squares show up!
+
+> The `let` keyword is a way to create a variable whose value _can_ change! For example, `let x = 3;` will create a variable named `x` whose value is `3`, but the value of `x` can be changed later on.
+
+## One last example
+
+Before wrapping up this chapter, let's look at one last example involving variables. We'll be using the `$rect` command quite a bit throughout this book, so we'll explore some more of the things we can do with it. Go ahead and tinker with the values of the variables defined here and see what happens.
+
+```js live=true
+// Variables
+const width = 100;
+const height = 50;
+const left = 50;
+const top = 100;
+const fillColor = "purple";
+
+// Create a rectangle
+$rect(width, height, left, top, { fill: fillColor });
+```

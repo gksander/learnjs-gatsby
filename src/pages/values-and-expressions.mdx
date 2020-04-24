@@ -1,0 +1,64 @@
+---
+title: Values and Expressions
+path: /values-and-expressions
+section: Fundamentals
+order: 4
+---
+
+# Values and Expressions
+
+## Values
+
+In programming, we regularly deal with _values_. These so-called **values** are just the "things" that we can access inside of our programs. For example, a number would be considered a value. A piece of text "Hello world!" would also be considered a value.
+
+It wouldn't make much sense to do arithmetic (like adding or subtracting) without numbers. In a similar way, it wouldn't make much sense to program without values. These _values_ hold the information that we want to work with. Let's look at an example.
+
+```js live=true
+$text("Hello world!", 25, 30);
+```
+
+In this example, we've got a handful of values!
+
+- `"Hello world!"` is a value. We generally call text values like this _string_ values, because they are "strings" of characters. (Think words and sentences.)
+- `25` and `30` are both values that you should recognize. They're just numbers.
+- `$text` is technically a value too! But it's a _function_, and we'll talk more about those in a later chapter.
+
+Values themselves are _incredibly_ useful to us, but not all that interesting by themselves. However, they become quite a bit more interesting once we start combining them!
+
+## Expressions
+
+_Values_ are very plain and they don't ever change. For example, `5` is always `5` :man-shrugging:. However, once we start _putting values together_, things start to get a little more interesting! For example, adding numbers is a bit more useful than just looking at the number `5`!
+
+In programming, we combine values together to create **expressions**. Here are some examples of expressions:
+
+- `5 + 3`
+- `(3 + 9) / 4`
+- `"Hello " + "world!"`
+
+Expressions are just combinations of values that evaluate to a _value_. This is important: **every expression can be evaluated to a single value**. Let's revisit our previous expressions in a code editor.
+
+```js live=true
+$log(5 + 3);
+$log((3 + 9) / 4);
+$log("Hello " + "world!");
+```
+
+Notice that, in the our log, each of our expressions evaluates to a single value!
+
+- `5 + 3` has a value of `8`.
+- `(3 + 9) / 4` has a value of `3`.
+- `"Hello " + "world!"` has a value of `"Hello world!"`.
+
+## Operators
+
+In the expression `5 + 3` we combined two values (`5` and `3`) to create a different value (`8`). In this case, we used _addition_ to combine these two values. We call addition an _operator_.
+
+**Operators** are tools for taking one or two values and turning them into a new value! You're likely familiar with some math-related operators, such as addition, subtraction, and multiplication. But there are plenty of operators for working on different _types_ of values, like strings (or words) and lists.
+
+Operators are an important part of creating expressions, and we'll be using them regularly throughout this book! So let's take a look at one last example. Try to identify all of the operators you see (things that take one or two values and return a new one). Don't worry if you don't know what they all do.
+
+```js live=true
+$log(72 * 15);
+$log(8 % 3);
+$log(-32);
+```
