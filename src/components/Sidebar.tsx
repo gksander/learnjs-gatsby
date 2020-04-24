@@ -26,19 +26,20 @@ const Sidebar: React.FC = () => {
     <StaticQuery
       query={graphql`
         query RouteGroups {
-          allMdx(sort: { order: ASC, fields: frontmatter___order }) {
-            group(field: frontmatter___section) {
-              edges {
-                node {
-                  id
-                  frontmatter {
-                    section
-                    title
-                    order
-                    path
-                  }
-                  tableOfContents
+          allMdx(
+            sort: { order: ASC, fields: frontmatter___order }
+            filter: { frontmatter: { title: { ne: "" } } }
+          ) {
+            edges {
+              node {
+                frontmatter {
+                  order
+                  path
+                  title
+                  section
                 }
+                tableOfContents
+                id
               }
             }
           }
@@ -46,6 +47,7 @@ const Sidebar: React.FC = () => {
       `}
     >
       {(data: QueryData) => {
+        // console.log(JSON.stringify(data));
         return (
           <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-20 py-4 px-6 sticky top-0">
             <div className="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
@@ -83,49 +85,52 @@ const Sidebar: React.FC = () => {
                 </div>
                 {/* Navigation */}
                 <div className="overflow-auto h-halfscreen md:h-auto hide-scrollbar">
-                  {data.allMdx.group.map((group, i) => {
-                    const title = group.edges[0].node.frontmatter.section;
+                  {data.allMdx.edges.map(({ node }) => {
+                    // Section headers
+                    if (node.frontmatter.section) {
+                      return (
+                        <h6
+                          className="md:min-w-full text-gray-900 text-sm uppercase font-bold block pt-1 mb-2 no-underline mt-2 first:mt-0"
+                          key={node.id}
+                        >
+                          {node.frontmatter.title}
+                        </h6>
+                      );
+                    }
 
                     return (
-                      <React.Fragment key={title}>
-                        <h6 className="md:min-w-full text-gray-900 text-sm uppercase font-bold block pt-1 mb-2 no-underline">
-                          {title}
-                        </h6>
-                        {group.edges.map(({ node }) => (
-                          <React.Fragment key={node.id}>
-                            <div className="items-center">
-                              <Link
-                                to={node.frontmatter.path}
-                                className={classNames(
-                                  "hover:text-primary-700 text-xs uppercase py-1 font-bold block",
-                                  node.frontmatter.path === activePathname
-                                    ? "text-primary-700 underline"
-                                    : "text-gray-700",
-                                )}
-                              >
-                                {node.frontmatter.title}
-                              </Link>
-                            </div>
-                            {node.frontmatter.path === activePathname && (
-                              <div className="pl-2 mb-1">
-                                {(
-                                  node.tableOfContents?.items?.[0]?.items ?? []
-                                ).map(({ title, url }) => (
-                                  <a
-                                    key={url}
-                                    className={classNames(
-                                      "block text-sm text-gray-700 hover:text-primary-700 whitespace-no-wrap truncate mb-1 last:mb-0",
-                                      activeHash === url && "text-primary-700",
-                                    )}
-                                    href={url}
-                                  >
-                                    {title}
-                                  </a>
-                                ))}
-                              </div>
+                      <React.Fragment key={node.id}>
+                        <div className="items-center">
+                          <Link
+                            to={node.frontmatter.path || ""}
+                            className={classNames(
+                              "hover:text-primary-700 text-xs uppercase py-1 font-bold block",
+                              node.frontmatter.path === activePathname
+                                ? "text-primary-700 underline"
+                                : "text-gray-700",
                             )}
-                          </React.Fragment>
-                        ))}
+                          >
+                            {node.frontmatter.title}
+                          </Link>
+                        </div>
+                        {node.frontmatter.path === activePathname && (
+                          <div className="pl-2 mb-1">
+                            {(
+                              node.tableOfContents?.items?.[0]?.items ?? []
+                            ).map(({ title, url }) => (
+                              <a
+                                key={url}
+                                className={classNames(
+                                  "block text-sm text-gray-700 hover:text-primary-700 whitespace-no-wrap truncate mb-1 last:mb-0",
+                                  activeHash === url && "text-primary-700",
+                                )}
+                                href={url}
+                              >
+                                {title}
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </React.Fragment>
                     );
                   })}
@@ -149,10 +154,6 @@ export interface QueryData {
 }
 
 export interface AllMdx {
-  group: Group[];
-}
-
-export interface Group {
   edges: Edge[];
 }
 
@@ -161,16 +162,16 @@ export interface Edge {
 }
 
 export interface Node {
-  id: string;
   frontmatter: Frontmatter;
   tableOfContents: TableOfContents;
+  id: string;
 }
 
 export interface Frontmatter {
-  section: string;
+  order: number | null;
+  path: null | string;
   title: string;
-  order: number;
-  path: string;
+  section: boolean | null;
 }
 
 export interface TableOfContents {

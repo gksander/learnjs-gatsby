@@ -12,7 +12,6 @@ const componentMap: { [key: string]: React.FC<any> } = {
   // Overriding standard tags
   a: (props) => {
     const classNames = "text-primary-700";
-    console.log(props.href);
 
     return /^http/.test(props.href) ? (
       <a className={classNames} target="_blank" {...props} />
