@@ -7,6 +7,105 @@ order: 3
 
 # What is JavaScript?
 
-Coming soon...
+In the last chapter we discussed _programming_ in general, and what a _programming language_ is.
 
-TODO: Comments, trailing semicolons, $ helpers, pixels?
+> A programming language is a language that humans can write and computers can make sense of.
+
+In this chapter, we're going to talk about one specific programming language: JavaScript (or JS for short). You may or may not have ever heard of JavaScript, but I _know_ you've used a website or application that was built with it. How do I know that? Well, because this site was built with it!
+
+We'll look at some details about JS in a bit, but let's first look at some things that can be built with JS.
+
+## What is JavaScript good for?
+
+JavaScript can be used to build a lot of things nowadays! Here's a list of some examples:
+
+- Most modern websites use JS to make their web pages interactive. You click a button and something pops up: JS is likely responsible for that. You enter some code into the website and then run it: JS is likely responsible for that.
+- JS can be used to build mobile phone apps - and there are _plenty_ of mobile apps that _are_ built with JS!
+- JS can be used to build desktop applications (applications that run on your computer, not through a web browser).
+- JS can be used to build "servers" that do things like process payments, or access data from some sort of database.
+- And more!
+
+The possibilities with JS are practically endless! But here's the kicker:
+
+> JavaScript is relatively easy to learn and use!
+
+In this book we'll be learning about programming in general, but we'll use JavaScript as a programming language to explore programming ideas. By the end of this, you will not only have an understanding of programming - but also about JavaScript!
+
+## Comments in JavaScript
+
+When programming, it is a good idea to document your code so it's easier to understand. To do this, we use code _comments_.
+
+> In programming, a **comment** is a human-readable explanation that is _not_ executed by the program.
+
+This is best portrayed with an example. Tinker with the first line in the live snippet below.
+
+```js live=true
+// THIS IS A COMMENT! I don't "do" anything.
+$log("I do something though.");
+```
+
+In JavaScript, any line that starts with `//` will be considered a "comment" and not executed by the program. These comments are just for humans! This will help us a lot throughout this book - but is _even more useful_ when writing code for large applications! It's important to communicate what code does, and why it does what it does, to other programmers (including your future self!).
+
+Let's look at one last example that illustrates why this is useful. Read through the code in the live snippet below. Even if you don't understand all of the code, you should at least be able to make sense of what's going on due to the comments.
+
+```js live=true
+// Create a sun looking thing.
+
+// Create a star that is as wide as the stage
+// And put it at the center of the stage
+$star($stageWidth/2, $stageWidth/2, $stageHeight/2, { fill: "yellow" });
+
+// Create an orange circle at the center of the star
+$circle($stageWidth/4, $stageWidth/2, $stageHeight/2, { fill: "orange" });
+```
+
+If the `$star` and `$circle` bits look confusing - that's okay! Can you at least tell what's going on based on the comments?
+
+## Semicolons 
+
+In a previous live snippet, we saw a line like this:
+
+```js
+$log("I do something though.");
+```
+
+Notice the semicolon `;` at the end of that? You might be wondering why that's there. In JavaScript we can add a `;` to declare that we're done with the current "statement" or "instruction". We can make a whole new instruction after that `;`. Let's see an example.
+
+```js live=true
+// Two instructions on one line!
+$log("Hello world!"); $log(5 + 5);
+```
+
+However, if you just add a new line, it will usually do the same thing - so these `;` pieces aren't always necessary. For example, we could have just as easily split this into two lines:
+
+```js live=true
+$log("Hello world!")
+$log(5 + 5)
+```
+
+It doesn't _hurt_ to add the `;` at end of lines, so you'll be seeing these at the end of lines throughout the code snippets in this book.
+
+## $ Helpers
+
+At this point, you've already seen a handful of commands that start with a `$`, such as `$log` or `$circle`. Anything that you see in this book that starts with a `$` isn't built into JavaScript - it's something that _we_ added to this site to make it a bit more fun!
+
+These `$` helpers allow us to make some interesting things right away so we can dive right into programming ideas without worrying about _too many_ details. To see all of the available helpers, [go check out this page](/helpers).
+
+## Pixels
+
+Throughout this book you'll also see the term "pixel" ("px" for short). Pixels aren't a "JavaScript thing" - but have more to do with computer graphics in general. Anything you see on a screen is made up of pixels.
+
+> Pixels are just the tiny squares that make up a digital image.
+
+When talking about computer graphics, we generally use pixels as our "unit of measurement". That is, we talk about the size of a picture in terms of pixels - not in terms of inches or centimeters.
+
+When producing graphics throughout this book, we'll always be working in pixels. Our default stage size is 200 pixels wide by 200 pixels tall. When we draw a shape, we'll specify its size and position in terms of pixels. Let's see an example.
+
+```js live=true
+// Draw a rectangle that is:
+// - 100 pixels wide
+// - 50 pixels tall
+$rect(100, 50);
+```
+
+This previous code snippet creates a rectangle that is 100 pixels wide and 50 pixels tall. The size of the stage is shown at the bottom-right corner of the stage. Notice that if you resize the stage, that value will change!

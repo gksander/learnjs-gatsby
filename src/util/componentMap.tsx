@@ -3,12 +3,23 @@ import * as React from "react";
 import CodeBlock from "../components/CodeBlock";
 import Alert from "../components/Alert";
 import AppVideo from "../components/AppVideo";
+import { Link } from "gatsby";
 
 /**
  * Transform elements
  */
 const componentMap: { [key: string]: React.FC<any> } = {
   // Overriding standard tags
+  a: (props) => {
+    const classNames = "text-primary-700";
+    console.log(props.href);
+
+    return /^http/.test(props.href) ? (
+      <a className={classNames} target="_blank" {...props} />
+    ) : (
+      <Link to={props.href} className={classNames} {...props} />
+    );
+  },
   pre: (props) => <div {...props} />,
   code: (props) => <CodeBlock {...props} />,
   h1: (props) => <h1 className="text-5xl border-b mb-5" {...props} />,
