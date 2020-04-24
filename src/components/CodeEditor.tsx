@@ -21,6 +21,7 @@ const highlight = (code: string) => (
   </Highlight>
 );
 
+// @ts-ignore
 /**
  * Code editor (wraps react-simple-code-editor)
  */
@@ -28,12 +29,18 @@ const CodeEditor: React.FC<{
   code: string;
   onCodeChange?: (val: string) => any;
   className?: string;
-}> = ({ code = "", onCodeChange = (v) => null, className = "" }) => (
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+}> = ({
+  code = "",
+  onCodeChange = (v) => null,
+  className = "",
+  onKeyDown = (e) => null,
+}) => (
+  // @ts-ignore
   <Editor
     value={code}
     highlight={highlight}
     onValueChange={onCodeChange}
-    // @ts-ignore
     style={{
       boxSizing: "border-box",
       fontFamily: '"Dank Mono", "Fira Code", monospace',
@@ -43,6 +50,7 @@ const CodeEditor: React.FC<{
     padding={10}
     textareaClassName="code-editor-textarea-override"
     preClassName="code-editor-pre-override"
+    onKeyDown={onKeyDown}
   />
 );
 

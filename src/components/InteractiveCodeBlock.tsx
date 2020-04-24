@@ -103,7 +103,13 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
   return (
     <div className="mb-5">
       <div className="border rounded shadow bg-white">
-        <CodeEditor code={value} onCodeChange={setValue} />
+        <CodeEditor
+          code={value}
+          onCodeChange={setValue}
+          onKeyDown={(e) => {
+            if (e.metaKey && /enter/i.test(e.key)) runCode();
+          }}
+        />
         <div className="flex relative flex-wrap">
           {/* Control buttons */}
           <div className="absolute left-0 top-0 z-10 py-2 -mx-4">
