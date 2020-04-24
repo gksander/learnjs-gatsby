@@ -22,6 +22,16 @@ module.exports = {
       },
     },
 
+    // Webfonts
+    {
+      resolve: "gatsby-plugin-web-font-loader",
+      options: {
+        google: {
+          families: ["Raleway:300,400,700,900"],
+        },
+      },
+    },
+
     // Image related
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
