@@ -1,8 +1,13 @@
 import * as React from "react";
 import { Resizable } from "re-resizable";
 import Button from "./Button";
-import { Layer, Rect, Stage, Text } from "react-konva";
-import { RectClass, TextClass } from "../util/StageItems";
+import { Circle, Layer, Rect, Stage, Star, Text } from "react-konva";
+import {
+  CircleClass,
+  RectClass,
+  StarClass,
+  TextClass,
+} from "../util/StageItems";
 import {
   FaPlay,
   FaUndoAlt,
@@ -21,7 +26,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
   // Local state
   const [value, setValue] = React.useState(code);
   const [stageItems, setStageItems] = React.useState<
-    Array<TextClass | RectClass>
+    Array<TextClass | RectClass | CircleClass | StarClass>
   >([]);
   const [logItems, setLogItems] = React.useState<String[]>([]);
   const [$stageWidth, setStageWidth] = React.useState(200);
@@ -45,6 +50,14 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
   const $rect = (...params: ConstructorParameters<typeof RectClass>) =>
     setStageItems((items) => items.concat(new RectClass(...params)));
 
+  // Circle helper
+  const $circle = (...params: ConstructorParameters<typeof CircleClass>) =>
+    setStageItems((items) => items.concat(new CircleClass(...params)));
+
+  // Star helper
+  const $star = (...params: ConstructorParameters<typeof StarClass>) =>
+    setStageItems((items) => items.concat(new StarClass(...params)));
+
   // Text helper
   const $text = (...params: ConstructorParameters<typeof TextClass>) => {
     const newTextItem = new TextClass(...params);
@@ -66,6 +79,8 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
         $error,
         $text,
         $rect,
+        $circle,
+        $star,
         $stageWidth,
         $stageHeight,
         // Disable some shit
@@ -180,6 +195,36 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
                                 x={item.x}
                                 y={item.y}
                                 fill="red"
+                                {...item.options}
+                              />
+                            );
+                          }
+
+                          // Circle
+                          if (item instanceof CircleClass) {
+                            return (
+                              <Circle
+                                key={item.id}
+                                radius={item.radius}
+                                x={item.x}
+                                y={item.y}
+                                fill="red"
+                                {...item.options}
+                              />
+                            );
+                          }
+
+                          // Star
+                          if (item instanceof StarClass) {
+                            return (
+                              <Star
+                                key={item.id}
+                                innerRadius={0.5 * item.radius}
+                                outerRadius={item.radius}
+                                x={item.x}
+                                y={item.y}
+                                fill="red"
+                                numPoints={5}
                                 {...item.options}
                               />
                             );

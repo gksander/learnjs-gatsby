@@ -38,3 +38,40 @@ export class RectClass {
     this.options = options;
   }
 }
+
+/**
+ * Circles
+ */
+export class CircleClass {
+  id = uuidv4();
+  radius!: number;
+  x!: number;
+  y!: number;
+  options: any = {};
+
+  constructor(radius = 0, x = 0, y = 0, options = {}) {
+    this.radius = radius;
+    this.x = x;
+    this.y = y;
+    this.options = options;
+  }
+}
+
+/**
+ * Rectangle class
+ */
+export class StarClass {
+  // Properties
+  id = uuidv4();
+  radius!: number;
+  x!: number;
+  y!: number;
+  options: any = {};
+
+  constructor(radius = 0, x = 0, y = 0, options = {}) {
+    this.radius = radius;
+    this.x = x;
+    this.y = y;
+    this.options = options;
+  }
+}
