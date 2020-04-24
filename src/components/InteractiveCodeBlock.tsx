@@ -128,10 +128,10 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
         <div className="flex relative flex-wrap">
           {/* Control buttons */}
           <div className="absolute left-0 top-0 z-10 py-2 -mx-4">
-            <Button onClick={runCode} className="mb-2">
+            <Button onClick={runCode} className="mb-2" label="Run Code">
               <FaPlay />
             </Button>
-            <Button onClick={resetCode}>
+            <Button onClick={resetCode} label="Reset Code">
               <FaUndoAlt />
             </Button>
           </div>

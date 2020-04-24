@@ -3,6 +3,7 @@ import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/shadesOfPurple";
 import Editor from "react-simple-code-editor";
 import classNames from "classnames";
+import { v4 as uuidv4 } from "uuid";
 
 const highlight = (code: string) => (
   <Highlight {...defaultProps} theme={theme} code={code} language="jsx">
@@ -35,23 +36,36 @@ const CodeEditor: React.FC<{
   onCodeChange = (v) => null,
   className = "",
   onKeyDown = (e) => null,
-}) => (
-  // @ts-ignore
-  <Editor
-    value={code}
-    highlight={highlight}
-    onValueChange={onCodeChange}
-    style={{
-      boxSizing: "border-box",
-      fontFamily: '"Dank Mono", "Fira Code", monospace',
-      ...theme.plain,
-    }}
-    className={classNames("text-sm", className)}
-    padding={10}
-    textareaClassName="code-editor-textarea-override"
-    preClassName="code-editor-pre-override"
-    onKeyDown={onKeyDown}
-  />
-);
+}) => {
+  const id = React.useRef(uuidv4());
+
+  const editor = (
+    // @ts-ignore
+    <Editor
+      value={code}
+      highlight={highlight}
+      onValueChange={onCodeChange}
+      style={{
+        boxSizing: "border-box",
+        fontFamily: '"Dank Mono", "Fira Code", monospace',
+        ...theme.plain,
+      }}
+      className={classNames("text-sm", className)}
+      padding={10}
+      textareaClassName="code-editor-textarea-override"
+      preClassName="code-editor-pre-override"
+      onKeyDown={onKeyDown}
+      aria-label="Code editor"
+      label="Code Editor"
+      textareaId={id.current}
+    />
+  );
+
+  return (
+    <React.Fragment>
+      <label>{editor}</label>
+    </React.Fragment>
+  );
+};
 
 export default CodeEditor;
