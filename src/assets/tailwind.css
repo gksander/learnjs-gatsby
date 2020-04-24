@@ -4,7 +4,6 @@
 
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,700;0,900;1,400&display=swap");
 
 /* purgecss start ignore */
 html,
