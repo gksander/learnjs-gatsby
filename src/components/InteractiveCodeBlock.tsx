@@ -166,14 +166,14 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
           case "ANIMATE_ITEMS": {
             const animations = action.animations;
 
-            // TODO: Wait for all animations to resolve
-            Promise.all(
+            // Wait for all animations to resolve
+            return Promise.all(
               animations.map(
                 (anim) =>
-                  new Promise((resolve) => {
+                  new Promise((res) => {
                     anim?.item?.node?.to?.({
                       ...anim,
-                      onFinish: () => resolve(true),
+                      onFinish: () => res(true),
                     });
                   }),
               ),
