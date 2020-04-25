@@ -1,17 +1,31 @@
 # What is this?
 
 ```js live=true
-const r = $rect(50, 50);
-const c = $circle(50);
-
-$animate(
-  { item: r, width: 100, duration: 1 },
-  { item: c, width: 100, x: 100, y: 100, duration: 1, fill: "blue" }
+// Rectangle
+const r = $rect(
+  50,
+  50,
+  $stageWidth/2,
+  $stageHeight/2,
+  { offsetX: 25, offsetY: 25 }
 );
 
-$animate({ item: c, y: 0, fill: "red" });
+// And text
+const t = $text(
+  "BAM!",
+  $stageWidth / 2,
+  $stageHeight / 2 - 25,
+  { align: "center", offsetX: 25, offsetY: 25, fontSize: 0 }
+);
 
-$text("Nice!", 100, 100, { fontSize: 24 });
+// Start the spin
+$animate({ item: r, rotation: -30, duration: 1, cornerRadius: 10 });
+
+// Then spin more and swing text in.
+$animate(
+  { item: r, rotation: 360, duration: 1, cornerRadius: 0, fill: "green" },
+  { item: t, fontSize: 24, duration: 0.5 }
+);
 ```
 
 This is a work in progress. Some day it will be a cool site about learning JavaScript using an interactive drawing

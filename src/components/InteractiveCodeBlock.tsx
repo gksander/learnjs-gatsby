@@ -279,7 +279,10 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             code={value}
             onCodeChange={(value) => this.setState({ value })}
             onKeyDown={(e) => {
-              if (e.metaKey && /enter/i.test(e.key)) this.runCode();
+              if (e.metaKey && /enter/i.test(e.key)) {
+                e.preventDefault();
+                this.runCode();
+              }
             }}
           />
           <div className="flex relative flex-wrap">
