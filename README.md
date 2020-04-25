@@ -1,7 +1,7 @@
 ## TODOs
 
 - [] Need to logging/toString stuff.
-- [] Saving data to localStorage...?
+- [] Scrolling in code
 
 ## General topics
 

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Resizable } from "re-resizable";
-import Button from "./Button";
 import { Circle, Layer, Rect, Stage, Star, Text } from "react-konva";
 import {
   CircleClass,
@@ -9,12 +8,13 @@ import {
   TextClass,
 } from "../util/StageItems";
 import {
-  FaPlay,
-  FaUndoAlt,
+  FaPlayCircle,
   FaAngleRight,
   FaExclamationTriangle,
 } from "react-icons/fa";
+import localForage from "localforage";
 import CodeEditor from "./CodeEditor";
+import classNames from "classnames";
 
 // Type of stage items
 type StageItem = TextClass | RectClass | CircleClass | StarClass;
@@ -42,11 +42,14 @@ type Action =
 type Props = {
   height?: number;
   code: string;
+  id: string;
 };
 
 // Component state
 type State = {
+  mode: "default" | "yours";
   value: string;
+  yourCode: string;
   actions: Action[];
   stageItems: StageItem[];
   logItems: string[];
@@ -64,7 +67,9 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     super(props);
 
     this.state = {
+      mode: "default",
       value: props.code,
+      yourCode: props.code,
       actions: [],
       stageItems: [],
       logItems: [],
@@ -137,8 +142,16 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
 
   // Reset our code back to original
   resetCode() {
-    this.setState({ value: this.props.code });
-    this.runCode();
+    this.setState({ value: this.props.code, mode: "default" });
+  }
+
+  // Change back to users code
+  changeToUsersCode() {
+    this.setState((prev) => ({
+      ...prev,
+      value: prev.yourCode,
+      mode: "yours",
+    }));
   }
 
   /**
@@ -204,7 +217,14 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
    * Try to run code
    */
   runCode() {
+    // Reset state
     this.resetStage();
+
+    // Save code on run....
+    if (this.state.value !== this.props.code) {
+      this.setState({ mode: "yours", yourCode: this.state.value });
+      if (this.props.id) localForage.setItem(this.props.id, this.state.value);
+    }
 
     // Bind our actions/state
     const { $stageWidth, $stageHeight } = this.state;
@@ -255,7 +275,14 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     }
   }
 
-  componentDidMount() {
+  // On mount, see if we've got stored code
+  async componentDidMount() {
+    try {
+      if (this.props.id) {
+        const storedCode = await localForage.getItem(this.props.id);
+        if (storedCode) this.setState({ yourCode: String(storedCode) });
+      }
+    } catch (_) {}
     this.runCode();
   }
 
@@ -264,6 +291,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
    */
   render() {
     const {
+      mode,
       logItems,
       value,
       $stageWidth,
@@ -275,6 +303,39 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     return (
       <div className="mb-5">
         <div className="border rounded shadow bg-white">
+          <div className="flex flex-wrap border-t">
+            <button
+              className="w-1/3 py-1 flex justify-center items-center text-primary-700 font-bold w-full md:w-1/2 border-b md:border-b-0 focus:outline-none active:bg-primary-100"
+              onClick={this.runCode.bind(this)}
+            >
+              <span className="mr-1">
+                {value !== this.props.code && "Save & "}Run
+              </span>
+              <FaPlayCircle />
+            </button>
+            <button
+              className={classNames(
+                "w-1/2 md:w-1/4 py-1",
+                mode === "default" &&
+                  "border-b-2 border-primary-700 bg-primary-100",
+              )}
+              disabled={mode === "default"}
+              onClick={this.resetCode.bind(this)}
+            >
+              Default
+            </button>
+            <button
+              className={classNames(
+                "w-1/2 md:w-1/4 border-b-4 border-transparent py-1",
+                mode === "yours" &&
+                  "border-b-2 border-primary-700 bg-primary-100",
+              )}
+              disabled={mode === "yours"}
+              onClick={this.changeToUsersCode.bind(this)}
+            >
+              Yours
+            </button>
+          </div>
           <CodeEditor
             code={value}
             onCodeChange={(value) => this.setState({ value })}
@@ -286,19 +347,6 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             }}
           />
           <div className="flex relative flex-wrap">
-            {/* Control buttons */}
-            <div className="absolute left-0 top-0 z-10 py-2 -mx-4">
-              <Button
-                onClick={this.runCode.bind(this)}
-                className="mb-2"
-                label="Run Code"
-              >
-                <FaPlay />
-              </Button>
-              <Button onClick={this.resetCode.bind(this)} label="Reset Code">
-                <FaUndoAlt />
-              </Button>
-            </div>
             {(() => {
               if (error) {
                 return (
@@ -316,7 +364,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
 
               return (
                 <React.Fragment>
-                  <div className="flex-1 py-3 flex justify-center">
+                  <div className="flex-1 py-3 flex justify-center overflow-hidden">
                     <Resizable
                       size={{ width: $stageWidth, height: $stageHeight }}
                       onResizeStop={(e, dir, ref, d) => {
@@ -411,10 +459,18 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       </div>
                     </Resizable>
                   </div>
-                  {logItems.length > 0 && (
-                    <div className="w-full md:w-1/3 border-t md:border-l">
-                      <div className="px-2 py-1 text-lg">Log</div>
-                      {logItems.map((item, i) => (
+                  <div className="w-full md:w-1/3 border-t md:border-l">
+                    <div className="px-2 py-1 text-lg">Log</div>
+                    {logItems.length === 0 ? (
+                      <div className="px-2 italic text-xs text-gray-700">
+                        <div className="mb-1">Nothing to see here...</div>
+                        <div>
+                          Use <span className="text-red-700">$log</span> to log
+                          things here.
+                        </div>
+                      </div>
+                    ) : (
+                      logItems.map((item, i) => (
                         <div key={i} className="px-1 py-1 flex items-center">
                           <div className="w-4">
                             <FaAngleRight />
@@ -423,9 +479,9 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                             {String(item)}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      ))
+                    )}
+                  </div>
                 </React.Fragment>
               );
             })()}
