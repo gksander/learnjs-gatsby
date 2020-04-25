@@ -9,6 +9,7 @@ export class TextClass {
   y!: number;
   text!: string;
   options: any = {};
+  node: any = null;
 
   constructor(text = "", x = 0, y = 0, options = {}) {
     this.text = text;
@@ -29,6 +30,7 @@ export class RectClass {
   x!: number;
   y!: number;
   options: any = {};
+  node: any = null;
 
   constructor(width = 0, height = 0, x = 0, y = 0, options = {}) {
     this.width = width;
@@ -68,6 +70,7 @@ export class StarClass {
   x!: number;
   y!: number;
   options: any = {};
+  node: any = null;
 
   constructor(radius = 0, x = 0, y = 0, options = {}) {
     this.radius = radius;

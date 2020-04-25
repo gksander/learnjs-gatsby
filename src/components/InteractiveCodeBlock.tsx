@@ -16,6 +16,8 @@ import {
 } from "react-icons/fa";
 import CodeEditor from "./CodeEditor";
 
+type StageItem = TextClass | RectClass | CircleClass | StarClass;
+
 /**
  * Code block
  */
@@ -25,10 +27,11 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
 }) => {
   // Local state
   const [value, setValue] = React.useState(code);
-  const [stageItems, setStageItems] = React.useState<
-    Array<TextClass | RectClass | CircleClass | StarClass>
-  >([]);
+  const [stageItems, setStageItems] = React.useState<Array<StageItem>>([]);
   const [logItems, setLogItems] = React.useState<String[]>([]);
+  const [animationRecords, setAnimationRecords] = React.useState<
+    [StageItem, object][]
+  >([]);
   const [$stageWidth, setStageWidth] = React.useState(200);
   const [$stageHeight, setStageHeight] = React.useState(200);
   const [error, setError] = React.useState<Error | null>(null);
@@ -37,6 +40,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
   const resetStage = () => {
     setStageItems([]);
     setLogItems([]);
+    setAnimationRecords([]);
     setError(null);
   };
 
@@ -47,8 +51,11 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
   const $error = (error: Error) => setError(error);
 
   // Rect helper
-  const $rect = (...params: ConstructorParameters<typeof RectClass>) =>
-    setStageItems((items) => items.concat(new RectClass(...params)));
+  const $rect = (...params: ConstructorParameters<typeof RectClass>) => {
+    const Rect = new RectClass(...params);
+    setStageItems((items) => items.concat(Rect));
+    return Rect;
+  };
 
   // Circle helper
   const $circle = (...params: ConstructorParameters<typeof CircleClass>) => {
@@ -58,14 +65,25 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
   };
 
   // Star helper
-  const $star = (...params: ConstructorParameters<typeof StarClass>) =>
-    setStageItems((items) => items.concat(new StarClass(...params)));
+  const $star = (...params: ConstructorParameters<typeof StarClass>) => {
+    const Star = new StarClass(...params);
+    setStageItems((items) => items.concat(Star));
+    return Star;
+  };
 
   // Text helper
   const $text = (...params: ConstructorParameters<typeof TextClass>) => {
     const newTextItem = new TextClass(...params);
     setStageItems((items) => items.concat(newTextItem));
     return newTextItem;
+  };
+
+  // Animation helper
+  const $animate = (item: StageItem, config = {}, duration = 1) => {
+    setAnimationRecords((records) =>
+      records.concat([[item, { ...config, duration: duration || 0 }]]),
+    );
+    return item;
   };
 
   /**
@@ -86,6 +104,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
         $star,
         $stageWidth,
         $stageHeight,
+        $animate,
         // Disable some shit
         print: undefined,
         console: undefined,
@@ -114,6 +133,19 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
 
   // When stage size changes, rerun code.
   React.useEffect(runCode, [$stageWidth, $stageHeight]);
+
+  // When animation records
+  React.useEffect(() => {
+    if (animationRecords.length > 0) {
+      animationRecords.forEach(([item, config]) => {
+        try {
+          item?.node?.to?.(config);
+        } catch (err) {
+          $error(err);
+        }
+      });
+    }
+  }, [animationRecords]);
 
   // When to show log
   const showLog = logItems.length > 0;
@@ -184,6 +216,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
                                 y={item.y}
                                 fontSize={18}
                                 {...item.options}
+                                ref={(node) => (item.node = node)}
                               />
                             );
                           }
@@ -199,6 +232,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
                                 y={item.y}
                                 fill="red"
                                 {...item.options}
+                                ref={(node) => (item.node = node)}
                               />
                             );
                           }
@@ -230,6 +264,7 @@ const InteractiveCodeBlock: React.FC<{ height?: number; code: string }> = ({
                                 fill="red"
                                 numPoints={5}
                                 {...item.options}
+                                ref={(node) => (item.node = node)}
                               />
                             );
                           }
