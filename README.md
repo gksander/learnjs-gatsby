@@ -1,6 +1,7 @@
 ## TODOs
 
 - [] Scrolling in code
+- [] Add ids to editors throughout current stuff
 
 ## General topics
 
