@@ -1,7 +1,6 @@
 ## TODOs
 
 - [] Scrolling in code
-- [] Resize bounds on the canvas
 
 ## General topics
 

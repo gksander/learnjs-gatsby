@@ -378,6 +378,8 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       minWidth={200}
                       minHeight={200}
                       className="border shadow-md relative"
+                      bounds="parent"
+                      grid={[10, 10]}
                     >
                       {/* Here's the actual stage */}
                       <Stage
