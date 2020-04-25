@@ -1,31 +1,26 @@
 # What is this?
 
 ```js live=true
-// Rectangle
-const r = $rect(
-  50,
-  50,
-  $stageWidth/2,
-  $stageHeight/2,
-  { offsetX: 25, offsetY: 25 }
-);
-
-// And text
-const t = $text(
-  "BAM!",
+// Create some circles (invisible)
+const circles = [0, 1, 2, 3, 4, 5].map(i => $circle(
+  0,
   $stageWidth / 2,
-  $stageHeight / 2 - 25,
-  { align: "center", offsetX: 25, offsetY: 25, fontSize: 0 }
-);
+  $stageHeight / 2,
+  { fill: `hsl(${60 * i} 100% 50%)` }
+));
 
-// Start the spin
-$animate({ item: r, rotation: -30, duration: 1, cornerRadius: 10 });
+// Animate them up
+circles.forEach((circ, i) => {
+  $animate({ item: circ, radius: $stageWidth/10 + 10, duration: 0.2 });
+  $animate({ item: circ, x: i * $stageWidth/5, y: 0, duration: 0.3 });
+});
 
-// Then spin more and swing text in.
-$animate(
-  { item: r, rotation: 360, duration: 1, cornerRadius: 0, fill: "green" },
-  { item: t, fontSize: 24, duration: 0.5 }
-);
+// Drop them back down
+$animate(...circles.map((circ, i) => ({
+  item: circ,
+  y: $stageHeight / 2,
+  duration: (i + 1) * 0.2
+})));
 ```
 
 This is a work in progress. Some day it will be a cool site about learning JavaScript using an interactive drawing
