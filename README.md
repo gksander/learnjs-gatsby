@@ -1,3 +1,7 @@
+## TODOs
+
+- [] Need to logging/toString stuff.
+- [] Saving data to localStorage...?
 
 ## General topics
 
