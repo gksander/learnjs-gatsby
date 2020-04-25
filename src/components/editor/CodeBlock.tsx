@@ -59,6 +59,8 @@ type State = {
   error: Error | null;
 };
 
+export const CodeContext = React.createContext({ code: "", height: 150 });
+
 /**
  * Interactive editor class
  */
@@ -337,13 +339,17 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
               Yours
             </button>
           </div>
-          <CodeEditor
-            value={value}
-            height={this.props.height || 140}
-            id={this.props.id}
-            onRun={this.runCode.bind(this)}
-            onChange={(value) => this.setState({ value })}
-          />
+          <CodeContext.Provider
+            value={{ code: value, height: this.props.height || 140 }}
+          >
+            <CodeEditor
+              value={value}
+              height={this.props.height || 140}
+              id={this.props.id}
+              onRun={this.runCode.bind(this)}
+              onChange={(value) => this.setState({ value })}
+            />
+          </CodeContext.Provider>
           <div className="flex relative flex-wrap border-t">
             {(() => {
               if (error) {

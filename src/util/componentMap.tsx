@@ -13,7 +13,7 @@ const componentMap: { [key: string]: React.FC<any> } = {
   a: (props) => {
     const classNames = "text-primary-700";
 
-    return /^http/.test(props.href) ? (
+    return /^(http|\/static)/.test(props.href) ? (
       <a className={classNames} target="_blank" {...props} />
     ) : (
       <Link to={props.href} className={classNames} {...props} />
