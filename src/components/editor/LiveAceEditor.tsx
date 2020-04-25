@@ -17,7 +17,6 @@ ace.config.setModuleUrl("ace/theme/chrome", "/ace-resources/theme-chrome.js");
  */
 const LiveAceEditor: React.FC<EditorProps> = ({
   value,
-  height = 140,
   id,
   onRun = () => null,
   onChange = (_) => null,
@@ -54,7 +53,6 @@ const LiveAceEditor: React.FC<EditorProps> = ({
         theme="chrome"
         value={value}
         width="100%"
-        height={`${height}px`}
         name={id}
         tabSize={2}
         commands={[
@@ -67,6 +65,8 @@ const LiveAceEditor: React.FC<EditorProps> = ({
         className="text-xs"
         enableLiveAutocompletion={true}
         onChange={onChange}
+        minLines={2}
+        maxLines={25}
       />
     </label>
   );

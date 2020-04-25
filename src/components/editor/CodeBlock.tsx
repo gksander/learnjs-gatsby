@@ -59,20 +59,23 @@ type State = {
   error: Error | null;
 };
 
-export const CodeContext = React.createContext({ code: "", height: 150 });
+export const CodeContext = React.createContext("");
 
 /**
  * Interactive editor class
  */
 class InteractiveCodeBlock extends React.Component<Props, State> {
+  initialCode = "";
+
   // Instantiate state
   constructor(props: Props) {
     super(props);
+    this.initialCode = props.children.trim();
 
     this.state = {
       mode: "default",
-      value: props.children,
-      yourCode: props.children,
+      value: this.initialCode,
+      yourCode: this.initialCode,
       actions: [],
       stageItems: [],
       logItems: [],
@@ -145,7 +148,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
 
   // Reset our code back to original
   resetCode() {
-    this.setState({ value: this.props.children, mode: "default" });
+    this.setState({ value: this.initialCode, mode: "default" });
   }
 
   // Change back to users code
@@ -224,7 +227,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     this.resetStage();
 
     // Save code on run....
-    if (this.state.value !== this.props.children) {
+    if (this.state.value !== this.initialCode) {
       this.setState({ mode: "yours", yourCode: this.state.value });
       if (this.props.id) localForage.setItem(this.props.id, this.state.value);
     }
@@ -312,7 +315,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
               onClick={this.runCode.bind(this)}
             >
               <span className="mr-1">
-                {value !== this.props.children && "Save & "}Run
+                {value !== this.initialCode && "Save & "}Run
               </span>
               <FaPlayCircle />
             </button>
@@ -339,12 +342,9 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
               Yours
             </button>
           </div>
-          <CodeContext.Provider
-            value={{ code: value, height: this.props.height || 140 }}
-          >
+          <CodeContext.Provider value={value}>
             <CodeEditor
               value={value}
-              height={this.props.height || 140}
               id={this.props.id}
               onRun={this.runCode.bind(this)}
               onChange={(value) => this.setState({ value })}
@@ -382,7 +382,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       minHeight={200}
                       className="border shadow-md overflow-hidden"
                       bounds="parent"
-                      grid={[10, 10]}
+                      // grid={[10, 10]}
                     >
                       {/* Here's the actual stage */}
                       <Stage

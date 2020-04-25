@@ -6,14 +6,14 @@ import { CodeContext } from "./CodeBlock";
 
 // Placeholder
 const PlaceholderEditor: React.FC = () => {
-  const { code, height } = React.useContext(CodeContext);
+  const code = React.useContext(CodeContext);
 
   return (
     <div className="relative">
       <pre
         className="text-xs text-gray-700 p-2 overflow-auto relative"
         style={{
-          height: `${height}px`,
+          maxHeight: "450px",
         }}
       >
         {code}
