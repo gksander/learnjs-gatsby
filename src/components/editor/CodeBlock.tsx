@@ -6,16 +6,16 @@ import {
   RectClass,
   StarClass,
   TextClass,
-} from "../util/StageItems";
+} from "../../util/StageItems";
 import {
   FaPlayCircle,
   FaAngleRight,
   FaExclamationTriangle,
 } from "react-icons/fa";
 import localForage from "localforage";
-import CodeEditor from "./CodeEditor";
 import classNames from "classnames";
-import toStringer from "../util/toStringer";
+import toStringer from "../../util/toStringer";
+import CodeEditor from "./CodeEditor";
 
 // Type of stage items
 type StageItem = TextClass | RectClass | CircleClass | StarClass;
@@ -42,7 +42,7 @@ type Action =
 // Component props
 type Props = {
   height?: number;
-  code: string;
+  children: string;
   id: string;
 };
 
@@ -69,8 +69,8 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
 
     this.state = {
       mode: "default",
-      value: props.code,
-      yourCode: props.code,
+      value: props.children,
+      yourCode: props.children,
       actions: [],
       stageItems: [],
       logItems: [],
@@ -143,7 +143,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
 
   // Reset our code back to original
   resetCode() {
-    this.setState({ value: this.props.code, mode: "default" });
+    this.setState({ value: this.props.children, mode: "default" });
   }
 
   // Change back to users code
@@ -222,7 +222,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     this.resetStage();
 
     // Save code on run....
-    if (this.state.value !== this.props.code) {
+    if (this.state.value !== this.props.children) {
       this.setState({ mode: "yours", yourCode: this.state.value });
       if (this.props.id) localForage.setItem(this.props.id, this.state.value);
     }
@@ -304,13 +304,13 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     return (
       <div className="mb-5">
         <div className="border rounded shadow bg-white">
-          <div className="flex flex-wrap border-t">
+          <div className="flex flex-wrap border-b">
             <button
               className="w-1/3 py-1 flex justify-center items-center text-primary-700 font-bold w-full md:w-1/2 border-b md:border-b-0 focus:outline-none active:bg-primary-100"
               onClick={this.runCode.bind(this)}
             >
               <span className="mr-1">
-                {value !== this.props.code && "Save & "}Run
+                {value !== this.props.children && "Save & "}Run
               </span>
               <FaPlayCircle />
             </button>
@@ -338,16 +338,13 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             </button>
           </div>
           <CodeEditor
-            code={value}
-            onCodeChange={(value) => this.setState({ value })}
-            onKeyDown={(e) => {
-              if (e.metaKey && /enter/i.test(e.key)) {
-                e.preventDefault();
-                this.runCode();
-              }
-            }}
+            value={value}
+            height={this.props.height || 140}
+            id={this.props.id}
+            onRun={this.runCode.bind(this)}
+            onChange={(value) => this.setState({ value })}
           />
-          <div className="flex relative flex-wrap">
+          <div className="flex relative flex-wrap border-t">
             {(() => {
               if (error) {
                 return (
@@ -365,7 +362,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
 
               return (
                 <React.Fragment>
-                  <div className="flex-1 py-3 flex justify-center overflow-hidden">
+                  <div className="flex-1 py-3 flex justify-center">
                     <Resizable
                       size={{ width: $stageWidth, height: $stageHeight }}
                       onResizeStop={(e, dir, ref, d) => {
@@ -377,7 +374,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       }}
                       minWidth={200}
                       minHeight={200}
-                      className="border shadow-md relative"
+                      className="border shadow-md overflow-hidden"
                       bounds="parent"
                       grid={[10, 10]}
                     >
@@ -462,7 +459,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       </div>
                     </Resizable>
                   </div>
-                  <div className="w-full md:w-1/3 border-t md:border-l">
+                  <div className="w-full md:w-1/3 border-t md:border-t-0 md:border-l">
                     <div className="px-2 py-1 text-lg">Log</div>
                     {logItems.length === 0 ? (
                       <div className="px-2 italic text-xs text-gray-700">

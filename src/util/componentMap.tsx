@@ -1,6 +1,6 @@
 import AppImage from "../components/AppImage";
 import * as React from "react";
-import CodeBlock from "../components/CodeBlock";
+import CodeBlock from "../components/editor/CodeBlock";
 import Alert from "../components/Alert";
 import AppVideo from "../components/AppVideo";
 import { Link } from "gatsby";

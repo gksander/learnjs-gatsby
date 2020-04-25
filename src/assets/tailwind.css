@@ -30,4 +30,17 @@ html {
   @apply shadow border rounded overflow-hidden max-w-xl !important;
 }
 
+/* Spinning for FA icons */
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
+}
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
 /* purgecss end ignore */

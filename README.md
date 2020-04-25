@@ -1,7 +1,7 @@
 ## TODOs
 
-- [] Scrolling in code
 - [] Add ids to editors throughout current stuff
+- [] Rewrite pages for new editor...
 
 ## General topics
 
