@@ -15,6 +15,7 @@ import {
 import localForage from "localforage";
 import CodeEditor from "./CodeEditor";
 import classNames from "classnames";
+import toStringer from "../util/toStringer";
 
 // Type of stage items
 type StageItem = TextClass | RectClass | CircleClass | StarClass;
@@ -202,7 +203,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             this.setState(
               (prev) => ({
                 ...prev,
-                logItems: prev.logItems.concat(value),
+                logItems: prev.logItems.concat(toStringer(value)),
               }),
               resolve,
             );
@@ -471,13 +472,16 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       </div>
                     ) : (
                       logItems.map((item, i) => (
-                        <div key={i} className="px-1 py-1 flex items-center">
-                          <div className="w-4">
+                        <div
+                          key={i}
+                          className="pl-1 pr-2 py-1 flex items-start"
+                        >
+                          <div className="w-4 mt-1">
                             <FaAngleRight />
                           </div>
-                          <div className="ml-1 whitespace-no-wrap overflow-auto hide-scrollbar">
+                          <pre className="ml-1 overflow-auto hide-scrollbar text-xs bg-gray-100 p-1 rounded block w-full">
                             {String(item)}
-                          </div>
+                          </pre>
                         </div>
                       ))
                     )}

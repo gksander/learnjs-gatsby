@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
  */
 export class TextClass {
   id = uuidv4();
+  type = "text";
   x!: number;
   y!: number;
   text!: string;
@@ -25,6 +26,7 @@ export class TextClass {
 export class RectClass {
   // Properties
   id = uuidv4();
+  type = "rect";
   width!: number;
   height!: number;
   x!: number;
@@ -46,6 +48,7 @@ export class RectClass {
  */
 export class CircleClass {
   id = uuidv4();
+  type = "circle";
   radius!: number;
   x!: number;
   y!: number;
@@ -66,6 +69,7 @@ export class CircleClass {
 export class StarClass {
   // Properties
   id = uuidv4();
+  type = "star";
   radius!: number;
   x!: number;
   y!: number;

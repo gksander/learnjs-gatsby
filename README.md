@@ -1,7 +1,7 @@
 ## TODOs
 
-- [] Need to logging/toString stuff.
 - [] Scrolling in code
+- [] Resize bounds on the canvas
 
 ## General topics
 
