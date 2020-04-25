@@ -18,6 +18,10 @@ import CodeEditor from "./CodeEditor";
 
 // Type of stage items
 type StageItem = TextClass | RectClass | CircleClass | StarClass;
+type Animation = {
+  item: StageItem;
+  [key: string]: any;
+};
 
 // Action types
 type Action =
@@ -26,9 +30,8 @@ type Action =
       item: StageItem;
     }
   | {
-      type: "ANIMATE_ITEM";
-      item: StageItem;
-      config: object;
+      type: "ANIMATE_ITEMS";
+      animations: Animation[];
     }
   | {
       type: "LOG";
@@ -128,9 +131,8 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
   }
 
   // Animation helper
-  $animate(item: StageItem, config = {}) {
-    this.addActionItem({ type: "ANIMATE_ITEM", item, config });
-    return item;
+  $animate(...args: Animation[]) {
+    this.addActionItem({ type: "ANIMATE_ITEMS", animations: args });
   }
 
   // Reset our code back to original
@@ -160,12 +162,23 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             break;
           }
 
-          // Animate an item
-          case "ANIMATE_ITEM": {
-            action.item?.node?.to?.({
-              ...action?.config,
-              onFinish: () => resolve(true),
-            });
+          // Animate some items
+          case "ANIMATE_ITEMS": {
+            const animations = action.animations;
+
+            // TODO: Wait for all animations to resolve
+            Promise.all(
+              animations.map(
+                (anim) =>
+                  new Promise((resolve) => {
+                    anim?.item?.node?.to?.({
+                      ...anim,
+                      onFinish: () => resolve(true),
+                    });
+                  }),
+              ),
+            ).then(resolve);
+
             break;
           }
 
@@ -230,7 +243,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
       // Build function
       const evaluator = new Function(
         `"use strict";return ({${injectableKeys.join(",")}} = {}) => {
-          try {${this.state.value}} catch (err) {$error(err)}
+          try {${this.state.value};\n;} catch (err) {$error(err)}
         }`,
       )();
 
@@ -240,6 +253,10 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
       $error(err);
       console.log(err);
     }
+  }
+
+  componentDidMount() {
+    this.runCode();
   }
 
   /**

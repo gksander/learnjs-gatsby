@@ -2,12 +2,16 @@
 
 ```js live=true
 const r = $rect(50, 50);
+const c = $circle(50);
 
-$animate(r, { width: 100 });
+$animate(
+  { item: r, width: 100, duration: 1 },
+  { item: c, width: 100, x: 100, y: 100, duration: 1, fill: "blue" }
+);
 
-$animate(r, { height: 100 });
+$animate({ item: c, y: 0, fill: "red" });
 
-$circle(50, $stageWidth/2, $stageHeight/2, { fill: "blue" });
+$text("Nice!", 100, 100, { fontSize: 24 });
 ```
 
 This is a work in progress. Some day it will be a cool site about learning JavaScript using an interactive drawing
