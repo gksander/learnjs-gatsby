@@ -11,7 +11,6 @@
 - [x] Values, Expressions, Operators
 - [] Statements
 - [x] Variables
-- [] Data Types (order? Not sure...)
 
 - [] DATA TYPES
 - [] Numbers
@@ -27,3 +26,11 @@
 - [] Switch statements
 - [] While Loops
 - [] For loops
+
+- FUNCTIONS IN DEPTH? Like doing interesting stuff with functions.
+
+- OBJECTS IN DEPTH. More with objects?
+
+- ARRAYS IN DEPTH. Array methods.
+
+- RECURSION?

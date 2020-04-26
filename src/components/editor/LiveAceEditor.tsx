@@ -34,6 +34,7 @@ const LiveAceEditor: React.FC<EditorProps> = ({
             { name: "$circle", caption: "Draw a circle" },
             { name: "$start", caption: "Draw a star" },
             { name: "$animate", caption: "Animate items" },
+            { name: "$wait", caption: "Wait a certain number of seconds" },
           ].map((piece) => ({
             name: piece.name,
             value: piece.name,

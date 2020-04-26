@@ -10,4 +10,16 @@ In a previous chapter we explored _values_, and decided they are just the "thing
 
 > In programming, _values_ are just the pieces of data we can access inside of our program.
 
-"Data" is at the heart of programming, and in programming we generally have multiple different _types_ of data (such as numbers or lists). So a _data type_ is really just a type of data :shrug:. In the upcoming chapters we'll be looking at a few different data types and what we can do with them!
+"Data" is at the heart of programming, and in programming we generally have multiple different _types_ of data (such as numbers or lists). So a _data type_ is really just a type of data :shrug:.
+
+## The typeof operator
+
+Recall that an _operator_ are tools for taking one or more values and turning them into a new value (like addition). JavaScript has a `typeof` operator (which is just "type of" condensed into a single word) that will tell us the type of any value. Let's check this operator out real quick.
+
+```js live=true id=datatypes-typeof
+$log( typeof 13 );
+```
+
+Let's break this down a bit. We're using `$log` to print some text to our log. We're looking at `typeof 13` which looks at the value `13` and gives us the _data type_ of that value. Hopefully this isn't too surprising: JavaScript is telling us that `13` is a number!
+
+There are a handful of basic data types in JavaScript, and we'll be exploring a few of these in the upcoming chapters. We'll start with numbers, because these should be familiar to you.

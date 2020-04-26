@@ -16,6 +16,7 @@ import localForage from "localforage";
 import classNames from "classnames";
 import toStringer from "../../util/toStringer";
 import CodeEditor from "./CodeEditor";
+import clamp from "../../util/clamp";
 
 // Type of stage items
 type StageItem = TextClass | RectClass | CircleClass | StarClass;
@@ -33,6 +34,10 @@ type Action =
   | {
       type: "ANIMATE_ITEMS";
       animations: Animation[];
+    }
+  | {
+      type: "WAIT";
+      duration: number;
     }
   | {
       type: "LOG";
@@ -146,6 +151,11 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     this.addActionItem({ type: "ANIMATE_ITEMS", animations: args });
   }
 
+  // $wait helper
+  $wait(duration: number) {
+    this.addActionItem({ type: "WAIT", duration });
+  }
+
   // Reset our code back to original
   resetCode() {
     this.setState({ value: this.initialCode, mode: "default" });
@@ -201,6 +211,13 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             break;
           }
 
+          // Waiting
+          case "WAIT": {
+            const duration = clamp(action.duration, 0, 10);
+            setTimeout(resolve, duration * 1000);
+            break;
+          }
+
           // Log stuff
           case "LOG": {
             const value = action.value;
@@ -239,6 +256,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
     const $star = this.$star.bind(this);
     const $text = this.$text.bind(this);
     const $animate = this.$animate.bind(this);
+    const $wait = this.$wait.bind(this);
     const $error = this.$error.bind(this);
     const $log = this.$log.bind(this);
     const __runUserCode__ = this.__runUserCode__.bind(this);
@@ -253,6 +271,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
         $star,
         $text,
         $animate,
+        $wait,
         $stageWidth,
         $stageHeight,
 
