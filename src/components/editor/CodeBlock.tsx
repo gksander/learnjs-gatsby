@@ -311,7 +311,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
         <div className="border rounded shadow bg-white">
           <div className="flex flex-wrap border-b">
             <button
-              className="w-1/3 py-1 flex justify-center items-center text-primary-700 font-bold w-full md:w-1/2 border-b md:border-b-0 focus:outline-none active:bg-primary-100"
+              className="w-1/3 py-2 flex justify-center items-center text-primary-700 font-bold w-full md:w-1/2 border-b md:border-b-0 focus:outline-none active:bg-primary-100"
               onClick={this.runCode.bind(this)}
             >
               <span className="mr-1">
@@ -321,7 +321,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             </button>
             <button
               className={classNames(
-                "w-1/2 md:w-1/4 py-1",
+                "w-1/2 md:w-1/4 py-1 text-sm",
                 mode === "default" &&
                   "border-b-2 border-primary-700 bg-primary-100",
               )}
@@ -332,7 +332,7 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
             </button>
             <button
               className={classNames(
-                "w-1/2 md:w-1/4 border-b-4 border-transparent py-1",
+                "w-1/2 md:w-1/4 border-b-4 border-transparent py-1 text-sm",
                 mode === "yours" &&
                   "border-b-2 border-primary-700 bg-primary-100",
               )}
@@ -465,12 +465,12 @@ class InteractiveCodeBlock extends React.Component<Props, State> {
                       </div>
                     </Resizable>
                   </div>
-                  <div className="w-full md:w-1/3 border-t md:border-t-0 md:border-l">
+                  <div className="w-full md:w-1/3 border-t md:border-t-0 md:border-l pb-1">
                     <div className="px-2 py-1 text-lg">Log</div>
                     {logItems.length === 0 ? (
                       <div className="px-2 italic text-xs text-gray-700">
                         <div className="mb-1">Nothing to see here...</div>
-                        <div>
+                        <div className="mb-1">
                           Use <span className="text-red-700">$log</span> to log
                           things here.
                         </div>

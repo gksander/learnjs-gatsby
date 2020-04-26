@@ -16,7 +16,7 @@ Suppose we wan to make a square. We don't know much about the square we're going
 
 Let's start our activity by creating a square that has a side length of `70` px (pixels).
 
-```js live=true
+```js live=true id=variables-square1
 // Create a square.
 $rect(70, 70);
 ```
@@ -33,7 +33,7 @@ You might have noticed something! Each time you wanted to change the size of the
 
 This definition might seem a bit weird. Let's go back to our square example and see how we could use a variable to make our lives a bit easier.
 
-```js live=true
+```js live=true id=variables-square2
 // This is a variable named `sideLength`.
 // It has a value of 70.
 const sideLength = 70;
@@ -65,7 +65,7 @@ In this example, we're going to create a rectangle that has the following proper
 
 Let's dig in!
 
-```js live=true
+```js live=true id=variables-rectangle
 // Define variables for the width and height
 const width = $stageWidth / 2;
 const height = $stageHeight / 2;
@@ -74,11 +74,7 @@ const height = $stageHeight / 2;
 $rect(width, height);
 ```
 
-Go ahead and resize the stage and notice how the rectangle is always half as wide and half as tall as the stage. In this example, we defined variables `width` and `height` even though we only used them once. However, defining them makes the last line `$rect(width, height)` much easier to read! Otherwise, we'd have to write:
-
-```js
-$rect($stageWidth / 2, $stageHeight /2);
-```
+Go ahead and resize the stage and notice how the rectangle is always half as wide and half as tall as the stage. In this example, we defined variables `width` and `height` even though we only used them once. However, defining them makes the last line `$rect(width, height)` much easier to read! Otherwise, we'd have to write `$rect($stageWidth / 2, $stageHeight /2);`.
 
 As our expressions get more and more complicated, this pattern will help us keep our code readable and understandable!
 
@@ -88,7 +84,7 @@ In our examples so far, we have been using the keyword `const` to define our var
 
 Any variable defined with `const` cannot have its value changed later on (by code)! Lets check out an example where we might break this rule. Let's create two squares that sit on top of each other. We'll be using the `$rect` command with a few more arguments than we've seen so far - don't worry too much about the details there.
 
-```js live=true
+```js live=true id=variables-const-error
 // Side length of our first square
 const sideLength = 150;
 
@@ -112,7 +108,7 @@ Let's fix this. In the live code snippet above, change the keyword `const` to `l
 
 Before wrapping up this chapter, let's look at one last example involving variables. We'll be using the `$rect` command quite a bit throughout this book, so we'll explore some more of the things we can do with it. Go ahead and tinker with the values of the variables defined here and see what happens.
 
-```js live=true
+```js live=true id=variables-rectangle-params
 // Variables
 const width = 100;
 const height = 50;

@@ -38,7 +38,7 @@ When programming, it is a good idea to document your code so it's easier to unde
 
 This is best portrayed with an example. Tinker with the first line in the live snippet below.
 
-```js live=true
+```js live=true id=wij-comment
 // THIS IS A COMMENT! I don't "do" anything.
 $log("I do something though.");
 ```
@@ -47,7 +47,7 @@ In JavaScript, any line that starts with `//` will be considered a "comment" and
 
 Let's look at one last example that illustrates why this is useful. Read through the code in the live snippet below. Even if you don't understand all of the code, you should at least be able to make sense of what's going on due to the comments.
 
-```js live=true
+```js live=true id=wij-sun
 // Create a sun looking thing.
 
 // Create a star that is as wide as the stage
@@ -62,22 +62,16 @@ If the `$star` and `$circle` bits look confusing - that's okay! Can you at least
 
 ## Semicolons 
 
-In a previous live snippet, we saw a line like this:
+In a previous live snippet, we saw a line like this `$log("I do something though.");`. Notice the semicolon `;` at the end of that? You might be wondering why that's there. In JavaScript we can add a `;` to declare that we're done with the current "statement" or "instruction". We can make a whole new instruction after that `;`. Let's see an example.
 
-```js
-$log("I do something though.");
-```
-
-Notice the semicolon `;` at the end of that? You might be wondering why that's there. In JavaScript we can add a `;` to declare that we're done with the current "statement" or "instruction". We can make a whole new instruction after that `;`. Let's see an example.
-
-```js live=true
+```js live=true id=wij-double-command
 // Two instructions on one line!
 $log("Hello world!"); $log(5 + 5);
 ```
 
 However, if you just add a new line, it will usually do the same thing - so these `;` pieces aren't always necessary. For example, we could have just as easily split this into two lines:
 
-```js live=true
+```js live=true id=wij-two-lines
 $log("Hello world!")
 $log(5 + 5)
 ```
@@ -100,7 +94,7 @@ When talking about computer graphics, we generally use pixels as our "unit of me
 
 When producing graphics throughout this book, we'll always be working in pixels. Our default stage size is 200 pixels wide by 200 pixels tall. When we draw a shape, we'll specify its size and position in terms of pixels. Let's see an example.
 
-```js live=true
+```js live=true id=wij-pixels
 // Draw a rectangle that is:
 // - 100 pixels wide
 // - 50 pixels tall
